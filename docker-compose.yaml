@@ -13,8 +13,7 @@ services:
             - MYSQL_USER=${MYSQL_USER:-demo_test}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD:-demo_test}
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-bunnyfied}
-        ports:
-            - "${MYSQL_PORT:-33066}:33066"
+
         volumes:
             - ./database/init_sql:/docker-entrypoint-initdb.d
             - ${DATABASE_STORAGE_PATH:-./database/data}:/var/lib/mysql:delegated
@@ -49,5 +48,3 @@ services:
         hostname: demo.redis
         build:
             context: ./redis
-        ports:
-            - "63379:63379"
