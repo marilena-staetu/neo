@@ -22,8 +22,7 @@ $entityManager = EntityManager::create($dbParams, $config);
 
 $entries = $entityManager->getRepository(\Entity\Entry::class)->findAll();
 
+$loader = new \Twig\Loader\FilesystemLoader('/var/www/public/');
+$twig = new \Twig\Environment($loader);
 
-echo 'View messages in the database: <br><br>';
-foreach ($entries as $entry) {
-    echo sprintf("%s %s <br>", $entry->getId(), $entry->getMessage());
-}
+echo $twig->render('index.html.twig', ['entries' => $entries, 'link' => 'http://alabala']);

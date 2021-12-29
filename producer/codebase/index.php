@@ -26,4 +26,11 @@ $entry->setMessage(sprintf('This message was inserted into the database by the p
 $entityManager->persist($entry);
 $entityManager->flush();
 
-echo '"Insert message into the database."';
+
+$loader = new \Twig\Loader\FilesystemLoader('/var/www/public/');
+$twig = new \Twig\Environment($loader);
+
+$nextId = $entry->getId();
+
+echo $twig->render('index.html.twig', ['next_id' => $nextId]);
+

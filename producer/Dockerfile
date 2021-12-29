@@ -12,10 +12,7 @@ RUN apk add vim
 # install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-COPY codebase /
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 WORKDIR /var/www
-CMD /entrypoint.sh
-EXPOSE 9001 9003
+
+COPY codebase /var/www
+RUN composer install

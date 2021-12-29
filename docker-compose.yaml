@@ -9,14 +9,16 @@ services:
             context: ./database
         command: --default-authentication-plugin=mysql_native_password
         environment:
-            - MYSQL_DATABASE=${MYSQL_DATABASE:-demo}
-            - MYSQL_USER=${MYSQL_USER:-demo_test}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD:-demo_test}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-bunnyfied}
+          - MYSQL_DATABASE=${MYSQL_DATABASE:-demo}
+          - MYSQL_USER=${MYSQL_USER:-demo_test}
+          - MYSQL_PASSWORD=${MYSQL_PASSWORD:-demo_test}
+          - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-bunnyfied}
 
         volumes:
             - ./database/init_sql:/docker-entrypoint-initdb.d
-            - ${DATABASE_STORAGE_PATH:-./database/data}:/var/lib/mysql:delegated
+            - mysql:/var/lib/mysql:delegated
+        expose:
+            - 3306
 
     receiver:
         container_name: demo_receiver
@@ -25,6 +27,9 @@ services:
             context: ./receiver
         volumes:
           - ./receiver/codebase:/var/www:delegated
+          - ./env.yml:/var/www/env.yml:delegated
+        expose:
+          - 9000
     producer:
         container_name: demo_producer
         hostname: demo.producer
@@ -32,19 +37,26 @@ services:
             context: ./producer
         volumes:
           - ./producer/codebase:/var/www:delegated
+          - ./env.yml:/var/www/env.yml:delegated
+        expose:
+          - 9000
     nginx:
         container_name: demo_nginx
         hostname: demo.nginx
         build:
             context: ./nginx
         volumes:
-            - ../producer/codebase:/var/www/producer:delegated
-            - ../receiver/codebase:/var/www/receiver:delegated
+          - ../producer/codebase:/var/www/producer:delegated
+          - ../receiver/codebase:/var/www/receiver:delegated
         ports:
-            - 8001:8001
-            - 8002:8002
+          - 8001:8001
+          - 8002:8002
     redis:
         container_name: demo_redis
         hostname: demo.redis
         build:
             context: ./redis
+        ports:
+          - 6379
+volumes:
+    mysql:
