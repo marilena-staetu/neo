@@ -16,6 +16,7 @@ services:
         ports:
             - "${MYSQL_PORT:-33066}:33066"
         volumes:
+            - ./database/init_sql:/docker-entrypoint-initdb.d
             - ${DATABASE_STORAGE_PATH:-./database/data}:/var/lib/mysql:delegated
 
     receiver:
@@ -40,9 +41,9 @@ services:
         volumes:
             - ../producer/codebase:/var/www/producer:delegated
             - ../receiver/codebase:/var/www/receiver:delegated
-            - ./sites-available/:/etc/nginx/sites-available
         ports:
             - 8001:8001
+            - 8002:8002
     redis:
         container_name: demo_redis
         hostname: demo.redis
