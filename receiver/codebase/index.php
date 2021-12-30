@@ -9,11 +9,11 @@ $paths = array("/var/www/src/Entity/");
 // the connection configuration
 $dbParams = array(
     'driver'   => 'pdo_mysql',
-    'user'     => 'demo_test',
-    'password' => 'demo_test',
-    'dbname'   => 'demo',
-    'port'     => '3306',
-    'host'     => 'database'
+    'user'     => getenv('MYSQL_USER'),
+    'password' => getenv('MYSQL_PASSWORD'),
+    'dbname'   => getenv('MYSQL_DB_NAME'),
+    'port'     => getenv('MYSQL_PORT'),
+    'host'     => getenv('MYSQL_HOST')
 );
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, true, null, null, false);
@@ -25,4 +25,5 @@ $entries = $entityManager->getRepository(\Entity\Entry::class)->findAll();
 $loader = new \Twig\Loader\FilesystemLoader('/var/www/public/');
 $twig = new \Twig\Environment($loader);
 
-echo $twig->render('index.html.twig', ['entries' => $entries, 'link' => 'http://alabala']);
+$producerUrl = getenv('PRODUCER_URL');
+echo $twig->render('index.html.twig', ['entries' => $entries, 'producerUrl' => $producerUrl]);

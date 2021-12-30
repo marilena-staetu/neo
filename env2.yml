@@ -1,0 +1,173 @@
+kind: Environment
+version: v1
+metadata:
+  com.bunnyshell.k8s.id: 12
+  com.bunnyshell.k8s.unique: jc73el
+name: demo5
+type: primary
+environmentVariables: {  }
+builtinVariables:
+  BNS_INGRESS_URL_NGINX_0: nginx-wnzec7.bnyenv.com/producer
+  BNS_INGRESS_URL_NGINX_1: nginx-wnzec7.bnyenv.com/receiver
+components:
+  -
+    kind: Database
+    gitDockerComposePath: /docker-compose.yaml
+    dockerCompose:
+      build:
+        context: ./database
+      command: '--default-authentication-plugin=mysql_native_password'
+      container_name: demo_mysql
+      environment:
+        MYSQL_DATABASE: demo
+        MYSQL_PASSWORD: demo_test
+        MYSQL_ROOT_PASSWORD: bunnyfied
+        MYSQL_USER: demo_test
+      hostname: demo.mysql
+      volumes: {  }
+    gitApplicationPath: database
+    dbSeed: null
+    version: v1
+    name: database
+    metadata:
+      com.bunnyshell.k8s.source-file: 'git://github.com/marilena-staetu/neo.git/docker-compose.yaml'
+      com.bunnyshell.k8s.source-file-hash: ec0d34f2a0487baecfcbba25de4278f11a5d16d2
+      com.bunnyshell.k8s.source-block-hash: 6fa8fc64a132276bc119b2e43b95a6ca
+      com.bunnyshell.k8s.unique: 1640814917.9173-0
+    gitRepo: 'git://github.com/marilena-staetu/neo.git'
+    gitBranch: main
+    builtinVariables:
+      BNS_GIT_BRANCH: main
+    envVarMapping: {  }
+    k8s: null
+    podSharing: {  }
+    hosts: {  }
+  -
+    kind: Application
+    gitDockerComposePath: /docker-compose.yaml
+    dockerCompose:
+      build:
+        context: ./nginx
+      container_name: demo_nginx
+      hostname: demo.nginx
+      ports:
+        -
+          published: 8001
+          target: 8001
+        -
+          published: 8002
+          target: 8002
+      volumes: {  }
+    gitApplicationPath: nginx
+    version: v1
+    name: nginx
+    metadata:
+      com.bunnyshell.k8s.source-file: 'git://github.com/marilena-staetu/neo.git/docker-compose.yaml'
+      com.bunnyshell.k8s.source-file-hash: ec0d34f2a0487baecfcbba25de4278f11a5d16d2
+      com.bunnyshell.k8s.source-block-hash: a0f956c76b93a14129e312288576c48f
+      com.bunnyshell.k8s.unique: 1640814917.9173-1
+    gitRepo: 'git://github.com/marilena-staetu/neo.git'
+    gitBranch: main
+    builtinVariables: {  }
+    envVarMapping: {  }
+    k8s: null
+    podSharing: {  }
+    hosts:
+      -
+        hostname: nginx-wnzec7.bnyenv.com
+        path: /producer
+        servicePort: 8001
+      -
+        hostname: nginx-wnzec7.bnyenv.com
+        path: /receiver
+        servicePort: 8002
+  -
+    kind: Application
+    gitDockerComposePath: /docker-compose.yaml
+    dockerCompose:
+      build:
+        context: ./producer
+      container_name: demo_producer
+      hostname: demo.producer
+      volumes: {  }
+      ports:
+        - 9000
+    gitApplicationPath: producer
+    version: v1
+    name: producer
+    metadata:
+      com.bunnyshell.k8s.source-file: 'git://github.com/marilena-staetu/neo.git/docker-compose.yaml'
+      com.bunnyshell.k8s.source-file-hash: ec0d34f2a0487baecfcbba25de4278f11a5d16d2
+      com.bunnyshell.k8s.source-block-hash: 44eec8cec99845472b36ba32bb090cfe
+      com.bunnyshell.k8s.unique: 1640814917.9173-2
+    gitRepo: 'git://github.com/marilena-staetu/neo.git'
+    gitBranch: main
+    builtinVariables: {  }
+    envVarMapping: {  }
+    k8s: null
+    podSharing: {  }
+    hosts:
+      -
+        hostname: producer-jc73el.bnyenv.com
+        path: /
+        servicePort: 9000
+  -
+    kind: Application
+    gitDockerComposePath: /docker-compose.yaml
+    dockerCompose:
+      build:
+        context: ./receiver
+      container_name: demo_receiver
+      hostname: demo.receiver
+      volumes: {  }
+      ports:
+        - 9000
+    gitApplicationPath: receiver
+    version: v1
+    name: receiver
+    metadata:
+      com.bunnyshell.k8s.source-file: 'git://github.com/marilena-staetu/neo.git/docker-compose.yaml'
+      com.bunnyshell.k8s.source-file-hash: ec0d34f2a0487baecfcbba25de4278f11a5d16d2
+      com.bunnyshell.k8s.source-block-hash: a2ab17584505365ff3799bdb9c3e01b6
+      com.bunnyshell.k8s.unique: 1640814917.9173-3
+    gitRepo: 'git://github.com/marilena-staetu/neo.git'
+    gitBranch: main
+    builtinVariables: {  }
+    envVarMapping: {  }
+    k8s: null
+    podSharing: {  }
+    hosts:
+      -
+        hostname: receiver-jc73el.bnyenv.com
+        path: /
+        servicePort: 9000
+  -
+    kind: Application
+    gitDockerComposePath: /docker-compose.yaml
+    dockerCompose:
+      build:
+        context: ./redis
+      container_name: demo_redis
+      hostname: demo.redis
+      ports:
+        -
+          target: 6379
+    gitApplicationPath: redis
+    version: v1
+    name: redis
+    metadata:
+      com.bunnyshell.k8s.source-file: 'git://github.com/marilena-staetu/neo.git/docker-compose.yaml'
+      com.bunnyshell.k8s.source-file-hash: ec0d34f2a0487baecfcbba25de4278f11a5d16d2
+      com.bunnyshell.k8s.source-block-hash: 82c2dd24d88d49a7fa05b714c56a3517
+      com.bunnyshell.k8s.unique: 1640814917.9173-4
+    gitRepo: 'git://github.com/marilena-staetu/neo.git'
+    gitBranch: main
+    builtinVariables: {  }
+    envVarMapping: {  }
+    k8s: null
+    podSharing: {  }
+    hosts:
+      -
+        hostname: redis-jc73el.bnyenv.com
+        path: /
+        servicePort: 6379

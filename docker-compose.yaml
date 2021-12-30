@@ -30,6 +30,13 @@ services:
           - ./env.yml:/var/www/env.yml:delegated
         expose:
           - 9000
+        environment:
+          - PRODUCER_URL=http://localhost:8001/
+          - MYSQL_USER=demo_test
+          - MYSQL_PASSWORD=demo_test
+          - MYSQL_DB_NAME=demo
+          - MYSQL_PORT=3306
+          - MYSQL_HOST=database
     producer:
         container_name: demo_producer
         hostname: demo.producer
@@ -40,6 +47,13 @@ services:
           - ./env.yml:/var/www/env.yml:delegated
         expose:
           - 9000
+        environment:
+          - RECEIVER_URL=http://localhost:8002/
+          - MYSQL_USER=demo_test
+          - MYSQL_PASSWORD=demo_test
+          - MYSQL_DB_NAME=demo
+          - MYSQL_PORT=3306
+          - MYSQL_HOST=database
     nginx:
         container_name: demo_nginx
         hostname: demo.nginx

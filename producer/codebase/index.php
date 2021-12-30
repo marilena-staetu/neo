@@ -9,11 +9,11 @@ $paths = array("/var/www/src/Entity/");
 // the connection configuration
 $dbParams = array(
     'driver'   => 'pdo_mysql',
-    'user'     => 'demo_test',
-    'password' => 'demo_test',
-    'dbname'   => 'demo',
-    'port'     => '3306',
-    'host'     => 'database'
+    'user'     => getenv('MYSQL_USER'),
+    'password' => getenv('MYSQL_PASSWORD'),
+    'dbname'   => getenv('MYSQL_DB_NAME'),
+    'port'     => getenv('MYSQL_PORT'),
+    'host'     => getenv('MYSQL_HOST')
 );
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, true, null, null, false);
@@ -32,5 +32,7 @@ $twig = new \Twig\Environment($loader);
 
 $nextId = $entry->getId();
 
-echo $twig->render('index.html.twig', ['next_id' => $nextId]);
+$receiverUrl = getenv('RECEIVER_URL');
+
+echo $twig->render('index.html.twig', ['next_id' => $nextId, 'receiverUrl' => $receiverUrl]);
 
