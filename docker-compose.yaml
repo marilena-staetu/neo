@@ -27,7 +27,6 @@ services:
             context: ./receiver
         volumes:
           - ./receiver/codebase:/var/www:delegated
-          - ./env.yml:/var/www/env.yml:delegated
         expose:
           - 9000
         environment:
@@ -44,7 +43,6 @@ services:
             context: ./producer
         volumes:
           - ./producer/codebase:/var/www:delegated
-          - ./env.yml:/var/www/env.yml:delegated
         expose:
           - 9000
         environment:
