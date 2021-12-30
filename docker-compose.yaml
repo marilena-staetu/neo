@@ -4,7 +4,7 @@ services:
     database:
         platform: linux/x86_64
         container_name: demo_mysql
-        hostname: demo.mysql
+        hostname: demo-mysql
         build:
             context: ./database
         command: --default-authentication-plugin=mysql_native_password
@@ -22,7 +22,7 @@ services:
 
     receiver:
         container_name: demo_receiver
-        hostname: demo.receiver
+        hostname: demo-receiver
         build:
             context: ./receiver
         volumes:
@@ -39,7 +39,7 @@ services:
           - MYSQL_HOST=database
     producer:
         container_name: demo_producer
-        hostname: demo.producer
+        hostname: demo-producer
         build:
             context: ./producer
         volumes:
@@ -56,7 +56,7 @@ services:
           - MYSQL_HOST=database
     nginx:
         container_name: demo_nginx
-        hostname: demo.nginx
+        hostname: demo-nginx
         build:
             context: ./nginx
         volumes:
@@ -67,7 +67,7 @@ services:
           - 8002:8002
     redis:
         container_name: demo_redis
-        hostname: demo.redis
+        hostname: demo-redis
         build:
             context: ./redis
         ports:
